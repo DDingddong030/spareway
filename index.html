@@ -561,6 +561,22 @@ kbd{border-radius:2px;font-family:var(--mono);font-weight:500}
 
 /* route map uses the same chart palette */
 .mapc{--ocean-a:var(--c-sea);--ocean-b:var(--c-sea);--land:var(--c-land);--coast:var(--c-coast);--border:var(--c-coast);--grat:var(--c-grid);--route:var(--c-route)}
+
+/* ---------- local news (future feature mock) ---------- */
+.nlist{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line)}
+.nw{padding:12px 14px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:8px;min-width:0}
+.nw:last-child{border-right:0}
+.nw .meta{font-size:11.5px;color:var(--faint);display:flex;gap:8px;flex-wrap:wrap}
+.nw h4{margin:0;font-size:13.5px;font-weight:600;line-height:1.45}
+.nw blockquote{margin:0;padding:6px 10px;border-left:2px solid var(--line-2);background:var(--card-2);font-size:12px;color:var(--muted);line-height:1.55}
+.nw dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 10px;font-size:12px}
+.nw dt{color:var(--faint)} .nw dd{margin:0;color:var(--fg)}
+.nw .imp{font-size:12px;padding-top:8px;border-top:1px dashed var(--line);color:var(--fg);line-height:1.55}
+.nw .act{display:flex!important;flex-direction:row!important;justify-content:flex-start!important;gap:6px;align-items:center;margin-top:auto}
+.nw .act .btn{width:auto!important;margin:0!important;flex:none}
+.nw .act button{height:28px;padding:0 10px;font-size:12px}
+.nw.done{opacity:.6}
+@media (max-width:1100px){.nlist{grid-template-columns:1fr}.nw{border-right:0;border-bottom:1px solid var(--line)}.nw:last-child{border-bottom:0}}
 </style>
 
 <div class="app">
@@ -612,6 +628,9 @@ kbd{border-radius:2px;font-family:var(--mono);font-weight:500}
       </div>
       <div class="k4" id="k4"></div>
       <div class="card"><div class="ch"><span data-i="bell"></span><h3>먼저 확인할 것</h3><span class="cnt-b" id="n-todo"></span><span style="margin-left:auto;font-size:12px;color:var(--faint)">눌러서 해당 부품·화면으로 이동</span></div><div class="cb"><div class="todo" id="todo"></div></div></div>
+      <div class="card news"><div class="ch"><h3>기항지 현지 소식</h3><span class="pill violet">향후 기능 · 예시 화면</span><span style="margin-left:auto;font-size:12px;color:var(--faint)">가상 소식 3건 · 계산에는 반영되지 않음</span></div>
+        <div class="cb"><p class="note" style="font-size:12.5px;color:var(--muted);margin:0">AI가 기항지 현지 뉴스·항만 공지를 읽고 항구·사건·기간을 근거 문장과 함께 정리합니다. 보급 계획에 영향이 있으면 어떤 가정을 바꿔야 하는지 제안하고, 반영 여부는 담당자가 정합니다. 아래 소식은 화면 설명을 위한 가상 예시입니다.</p>
+        <div class="nlist" id="news"></div></div></div>
       <div class="dec">
         <div class="card">
           <div class="ch"><span data-i="package"></span><h3>보급안</h3><span class="pill blue" id="pcnt"></span>
@@ -1195,6 +1214,31 @@ function drawChart(){
 }
 window.__chartReady = true;
 new ResizeObserver(() => drawChart()).observe(document.getElementById('chart'));
+
+/* ---------- local news mock ---------- */
+const NEWS = [
+  { port:'P3', src:'항만 공지 (가상)', date:'11-02', title:'강풍 예보로 11월 19~21일 도선·접안 작업 제한 가능',
+    quote:'“기상 악화가 예상되어 해당 기간 대형 선박의 도선 및 접안 작업이 제한되거나 지연될 수 있음”',
+    ev:'접안 제한 가능', per:'11-19 ~ 11-21 (D+22 전후)', vari:'케이프타운 기항 확률', sug:'기항 확률 80% → 70% 가정으로 재계산 검토', n:6, k:'warn' },
+  { port:'P2', src:'현지 뉴스 (가상)', date:'11-01', title:'공항 화물터미널 처리 지연, 반출까지 평균 하루 더 걸려',
+    quote:'“성수기 물량 증가로 항공화물 반출 대기가 평소보다 약 1일 늘었다”',
+    ev:'항공화물 반출 지연', per:'11월 첫째 주~', vari:'싱가포르 항공편 준비 소요일', sug:'준비 소요일 +1일 가정으로 기한 여유 재확인', n:5, k:'warn' },
+  { port:'P4', src:'세관 공지 (가상)', date:'10-31', title:'목재 포장 검역 증명서 원본 제출 요건 강화',
+    quote:'“목재 포장재가 포함된 화물은 검역 증명서 원본을 입항 전 제출해야 함”',
+    ev:'서류 요건 강화', per:'11-15 시행', vari:'브라질 서류 조건', sug:'현재 이 항구로 보내는 부품이 없어 영향 없음 · 서류 조건표만 갱신', n:0, k:'ok' }
+];
+const newsSt = {};
+function renderNews(){
+  const el = document.getElementById('news'); if (!el) return;
+  el.innerHTML = NEWS.map((x, i) => { const pt = portOf(x.port), st = newsSt[i];
+    return `<div class="nw${st ? ' done' : ''}"><span class="meta"><b style="color:var(--fg)">${pt.short}</b><span>${x.src}</span><span class="tn">${x.date}</span></span>
+      <h4>${x.title}</h4><blockquote>${x.quote}</blockquote>
+      <dl><dt>사건</dt><dd>${x.ev}</dd><dt>기간</dt><dd class="tn">${x.per}</dd><dt>영향 변수</dt><dd>${x.vari}</dd><dt>관련 부품</dt><dd class="tn">${x.n}건</dd></dl>
+      <div class="imp"><span class="pill ${x.k}">${x.n ? '확인 필요' : '영향 없음'}</span> ${x.sug}</div>
+      <div class="act">${st ? `<span style="font-size:12px;color:var(--muted)">${st}</span><button class="btn ghost" type="button" data-nw="${i}" data-a="">되돌리기</button>` : `<button class="btn" type="button" data-nw="${i}" data-a="반영 검토로 표시함">반영 검토</button><button class="btn ghost" type="button" data-nw="${i}" data-a="무시함">무시</button>`}</div></div>`; }).join('');
+}
+document.getElementById('news').addEventListener('click', e => { const b = e.target.closest('[data-nw]'); if (!b) return; newsSt[b.dataset.nw] = b.dataset.a || undefined; renderNews(); });
+renderNews();
 paintIcons(document); syncTheme(); renderAll();
 const start = (location.hash || '').slice(1);
 go(['decide','docs','route','verify'].includes(start) ? start : 'decide');

@@ -389,6 +389,64 @@ details.more2 summary{cursor:pointer;font-size:12.5px;color:var(--muted)}
 .foot2{font-size:11.5px;color:var(--faint);line-height:1.6}
 @media (max-width:1280px){ .k4,.todo{grid-template-columns:1fr 1fr} .dec{grid-template-columns:1fr} }
 @media (max-width:640px){ .k4,.todo{grid-template-columns:1fr} .voy{flex-direction:column;align-items:stretch} .modes{align-items:stretch} }
+
+/* ---------- hero (always dark, cinematic) ---------- */
+.hero{position:relative;overflow:hidden;min-height:470px;padding:0;display:flex;flex-direction:column;justify-content:space-between;
+  --fg:#eaf1fb; --muted:#9aabc3; --faint:#6b7c95; --card:#0d1626; --card-2:#13203a; --line:rgba(130,170,230,.14); --line-2:rgba(130,170,230,.28);
+  --blue:#3b86ff; --blue-3:#7fb2ff; --blue-2:rgba(59,134,255,.18); --ok:#34d98a; --warn:#f7ae35; --bad:#ff5466; --ok-2:rgba(52,217,138,.15); --warn-2:rgba(247,174,53,.15); --bad-2:rgba(255,84,102,.15);
+  background:radial-gradient(120% 140% at 75% 30%,#0d2340 0%,#06101f 55%,#040912 100%);color:var(--fg);border-color:rgba(130,170,230,.18);color-scheme:dark}
+.hero #hmap{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .hshade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(4,9,18,.94) 0%,rgba(4,9,18,.72) 30%,rgba(4,9,18,0) 58%),linear-gradient(0deg,rgba(4,9,18,.85) 0%,rgba(4,9,18,0) 30%)}
+.hero .htop,.hero .hcopy,.hero .hsteps{position:relative;z-index:2}
+.hero .htop{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 22px 0;flex-wrap:wrap}
+.hero .who{display:flex;align-items:center;gap:12px;min-width:0}
+.hero .who svg.ship{width:76px;height:38px;border-radius:7px;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.hero .who b{font-size:16px;display:block}
+.hero .who span{font-size:12px;color:var(--muted)}
+.hero .modes small{background:rgba(9,16,30,.7);padding:2px 8px;border-radius:6px;color:var(--muted)}
+.hero .modes .seg{background:rgba(10,18,34,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.hero .hcopy{padding:8px 22px 0;max-width:560px;display:flex;flex-direction:column;gap:10px}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.08em;color:var(--blue-3);font-weight:600}
+.hero .eyebrow .live{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(52,217,138,.6);animation:hpulse 2s infinite}
+.hero h1{margin:0;word-break:keep-all;font-size:clamp(22px,2.6vw,32px);line-height:1.25;letter-spacing:-.02em;font-weight:700;text-wrap:balance}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#7fb2ff,#8ef0c4);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .hcopy p{margin:0;font-size:13.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 14px}
+.hero .hcopy p span{display:inline-flex;align-items:center;gap:6px}
+.hero .hcopy p i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.hero .hsteps{margin:16px 14px 14px;padding:12px 16px;border-radius:12px;background:rgba(9,16,30,.66);border:1px solid rgba(130,170,230,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hero .stp i{background:#0d1626}
+.hero .hlab{font:600 11.5px var(--f);fill:#eaf1fb;paint-order:stroke;stroke:rgba(4,9,18,.85);stroke-width:3.5px;stroke-linejoin:round}
+.hero .hsub{font:500 10.5px var(--f);fill:#9aabc3;paint-order:stroke;stroke:rgba(4,9,18,.85);stroke-width:3px}
+.hero .ring{transform-box:fill-box;transform-origin:center;animation:hring 2.4s ease-out infinite}
+.hero .dash{animation:hdash 1.6s linear infinite}
+.hero .draw{animation:hdraw 2.2s ease-out both}
+@keyframes hpulse{0%{box-shadow:0 0 0 0 rgba(52,217,138,.55)}70%{box-shadow:0 0 0 9px rgba(52,217,138,0)}100%{box-shadow:0 0 0 0 rgba(52,217,138,0)}}
+@keyframes hring{0%{transform:scale(.6);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+@keyframes hdash{to{stroke-dashoffset:-24}}
+@keyframes hdraw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion: reduce){.hero .ring,.hero .dash,.hero .draw,.hero .eyebrow .live{animation:none}}
+@media (max-width:760px){.hero{min-height:0}.hero .hshade{background:linear-gradient(0deg,rgba(4,9,18,.92) 0%,rgba(4,9,18,.55) 100%)}.hero .hcopy{padding-top:40px}.hero .modes{align-items:flex-start}}
+
+/* ---------- polish: Stripe-style comparison bars, Linear-style keys, Vercel-style grid ---------- */
+.cmpb{display:flex;flex-direction:column;gap:5px;margin-top:6px;padding-top:10px;border-top:1px dashed var(--line)}
+.cmpb > div{display:grid;grid-template-columns:62px minmax(0,1fr) auto;align-items:center;gap:8px;font-size:11.5px;color:var(--faint)}
+.cmpb > div.me{color:var(--fg);font-weight:600}
+.cmpb .tr{height:6px;border-radius:3px;background:var(--line);overflow:hidden;display:block}
+.cmpb .tr u{display:block;height:100%;border-radius:3px;background:var(--faint);transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.cmpb em{font-style:normal;font-size:11.5px;min-width:52px;text-align:right}
+.cmpb.chips{flex-direction:row;flex-wrap:wrap;gap:6px}
+.k{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.k:hover,.td:hover{transform:translateY(-2px);border-color:var(--line-2)}
+.td{transition:transform .18s ease,border-color .18s ease}
+kbd{font:600 10.5px/1 var(--f);padding:3px 6px;border-radius:5px;border:1px solid var(--line-2);background:var(--card-2);color:var(--muted);white-space:nowrap}
+.search kbd{margin-left:auto}
+.keys{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:0 18px 14px;font-size:11.5px;color:var(--faint)}
+.keys span{display:inline-flex;align-items:center;gap:5px}
+.main{background-image:radial-gradient(circle,var(--line) 1px,transparent 1.2px);background-size:22px 22px}
+.view:not([hidden]) > *{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+.view:not([hidden]) > *:nth-child(2){animation-delay:.05s}.view:not([hidden]) > *:nth-child(3){animation-delay:.1s}.view:not([hidden]) > *:nth-child(4){animation-delay:.15s}.view:not([hidden]) > *:nth-child(5){animation-delay:.2s}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.view:not([hidden]) > *{animation:none}.k:hover,.td:hover{transform:none}}
 </style>
 
 <div class="app">
@@ -411,15 +469,17 @@ details.more2 summary{cursor:pointer;font-size:12.5px;color:var(--muted)}
       <div class="grow"></div>
       <span class="chipx hide"><span class="dot" style="background:var(--ok)"></span>추천 계산 완료</span>
       <span class="chipx hide tn" id="clock"></span>
-      <label class="search"><span data-i="search"></span><span class="sr">부품 검색</span><input id="q" type="search" placeholder="부품명, 부품번호, 항구 검색"></label>
+      <label class="search"><span data-i="search"></span><span class="sr">부품 검색</span><input id="q" type="search" placeholder="부품·항구 검색"><kbd aria-hidden="true">/</kbd></label>
       <button class="iconbtn" id="theme" type="button" aria-label="화면 테마 바꾸기"></button>
       <div class="user"><span class="av">공</span><div><b>공무팀</b><span>예비품 보급 담당</span></div></div>
     </header>
 
     <!-- 보급 결정 -->
     <section class="view" id="v-decide" aria-label="보급 결정">
-      <div class="card voy">
-        <div class="who"><svg class="ship" viewBox="0 0 120 60" aria-hidden="true">
+      <div class="card hero" id="hero">
+        <svg id="hmap" aria-hidden="true"></svg>
+        <div class="hshade" aria-hidden="true"></div>
+        <div class="htop"><div class="who"><svg class="ship" viewBox="0 0 120 60" aria-hidden="true">
   <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c3557"/><stop offset="1" stop-color="#6d8fb4"/></linearGradient>
     <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f4a73"/><stop offset="1" stop-color="#0c2440"/></linearGradient></defs>
   <rect width="120" height="60" fill="url(#sky)"/><rect y="41" width="120" height="19" fill="url(#sea)"/>
@@ -431,8 +491,11 @@ details.more2 summary{cursor:pointer;font-size:12.5px;color:var(--muted)}
   <path d="M5 33.5h107l-3.5 4H8z" fill="#1d2c45"/><path d="M8 37.5h100.5l-4 6.5H13z" fill="#1d2c45"/>
   <path d="M10.5 41h97.6l-3.6 3H13z" fill="#b8343f"/><path d="M5 33.5h107" stroke="#e8edf4" stroke-width=".8"/>
 </svg><div><b>MV 한빛 <span class="pill ok">항해 중</span></b><span>Supramax 벌크 · 계획 시점 D+0 · 부품 12건</span></div></div>
-        <div class="steps2" id="vsteps"></div>
-        <div class="modes"><div class="seg" role="group" aria-label="추천 기준" style="margin:0"><button type="button" data-m="deadline" aria-pressed="true">기한 우선</button><button type="button" data-m="cost" aria-pressed="false">비용 우선</button></div><small id="modenote"></small></div>
+          <div class="modes"><div class="seg" role="group" aria-label="추천 기준" style="margin:0"><button type="button" data-m="deadline" aria-pressed="true">기한 우선</button><button type="button" data-m="cost" aria-pressed="false">비용 우선</button></div><small id="modenote"></small></div></div>
+        <div class="hcopy"><span class="eyebrow"><span class="live"></span>항차 HB-2611 · 보급 계획</span>
+          <h1>예비품 <em id="h-n">12</em>건, 받을 항구와 운송편을 정했습니다</h1>
+          <p id="h-sub"></p></div>
+        <div class="hsteps"><div class="steps2" id="vsteps"></div></div>
       </div>
       <div class="k4" id="k4"></div>
       <div class="card"><div class="ch"><span data-i="bell"></span><h3>먼저 확인할 것</h3><span class="cnt-b" id="n-todo"></span><span style="margin-left:auto;font-size:12px;color:var(--faint)">눌러서 해당 부품·화면으로 이동</span></div><div class="cb"><div class="todo" id="todo"></div></div></div>
@@ -442,6 +505,7 @@ details.more2 summary{cursor:pointer;font-size:12.5px;color:var(--muted)}
             <div class="seg" role="group" aria-label="목록 필터"><button type="button" data-f="all" aria-pressed="true">전체</button><button type="button" data-f="risk" aria-pressed="false">위험·주의</button><button type="button" data-f="open" aria-pressed="false">미승인</button></div>
             <button class="btn" id="approveAll" type="button" style="margin-left:10px;height:34px;padding:0 14px"><span data-i="circle-check"></span>전체 승인</button></div>
           <div class="cb tw"><table class="dt" id="dtbl"></table></div>
+          <div class="keys" aria-label="단축키"><span><kbd>↑</kbd><kbd>↓</kbd> 부품 이동</span><span><kbd>A</kbd> 승인</span><span><kbd>/</kbd> 검색</span><span><kbd>1</kbd>~<kbd>4</kbd> 화면 전환</span></div>
           <p class="foot2" style="padding:0 18px 16px">기한 내 도착은 재보급까지 포함해 필요 기한 항구까지 받을 확률입니다. 계획과 다른 별도 세계에서 1,000회 모의 운항한 결과이며, 선박·부품·비용은 모두 합성 시나리오입니다.</p>
         </div>
         <div class="card det" id="det"></div>
@@ -586,6 +650,15 @@ function renderVoy(){
   document.getElementById('vsteps').innerHTML = PORTS.map((p, i) => { const n = PARTS.filter(q => q.rec.port_id === p.id).length;
     return `<div class="stp${p.callP < 1 ? ' cut' : ''}"><i>${n}</i><b>${p.short}</b><span class="tn">D+${p.eta}${p.callP < 1 ? ` · 기항 ${pct(p.callP)}` : ''}</span></div>`; }).join('');
   document.getElementById('modenote').textContent = MODES[mode].note;
+  if (window.__heroReady) drawHero();
+}
+function fmtK(v, dg, u){ return u === '$' ? usd(v) : `${Number(v).toFixed(dg)}<small>${u}</small>`; }
+let countedOnce = false;
+function countUp(){
+  if (countedOnce || matchMedia('(prefers-reduced-motion: reduce)').matches) { countedOnce = true; return; } countedOnce = true;
+  document.querySelectorAll('#k4 b[data-cv]').forEach(el => { const to = +el.dataset.cv, dg = +el.dataset.dg, u = el.dataset.u, t0 = performance.now(), D = 1100;
+    const step = t => { const k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3); el.innerHTML = fmtK(to * e, dg, u); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step); });
 }
 function renderK(){
   const M = MODES[mode].m, n = PARTS.length;
@@ -593,12 +666,16 @@ function renderK(){
   const dc = (M.cash_cost_mean - B1M.cash_cost_mean) / B1M.cash_cost_mean;
   const todoN = buildTodo().length;
   const dd = (a, b) => { const d = (a - b) * 100; return Math.abs(d) < .5 ? '<span style="color:var(--muted)">현행과 비슷</span>' : `<span style="color:var(--${d > 0 ? 'ok' : 'bad'})">현행 대비 ${d > 0 ? '+' : '−'}${Math.abs(d).toFixed(1)}%p</span>`; };
+  const bars = (m, base, fmt, low) => { const mx = Math.max(m, base) || 1, good = low ? m <= base : m >= base;
+    return `<div class="cmpb"><div><span>지금 방식</span><span class="tr"><u style="width:${base / mx * 100}%"></u></span><em class="tn">${fmt(base)}</em></div><div class="me"><span>SpareWay</span><span class="tr"><u style="width:${m / mx * 100}%;background:var(--${good ? 'ok' : 'warn'})"></u></span><em class="tn">${fmt(m)}</em></div></div>`; };
+  const pf = v => (v * 100).toFixed(1) + '%';
   document.getElementById('k4').innerHTML = [
-    ['package-check','ok','기한 내 보급 · 모의평가', `${(on * 100).toFixed(1)}<small>%</small>`, dd(on, onB)],
-    ['plane','blue-3','첫 보급 성공 · 모의평가', `${(fs * 100).toFixed(1)}<small>%</small>`, dd(fs, fsB)],
-    ['circle-dollar-sign','violet','평균 물류비 · 모의평가', usd(M.cash_cost_mean), `<span style="color:var(--${dc < 0 ? 'ok' : 'bad'})">현행 대비 ${dc < 0 ? '−' : '+'}${Math.abs(dc * 100).toFixed(1)}%</span>`],
-    ['bell','warn','먼저 확인할 것', `${todoN}<small>건</small>`, '<span style="color:var(--muted)">아래 목록에서 바로 처리</span>']
-  ].map(([i, c, l, v, s]) => `<div class="card k"><span class="l"><span style="color:var(--${c});display:inline-flex">${ic(i)}</span>${l}</span><b class="tn">${v}</b><span class="s">${s}</span></div>`).join('');
+    ['package-check','ok','기한 내 보급 · 모의평가', on * 100, 1, '%', dd(on, onB), bars(on, onB, pf)],
+    ['plane','blue-3','첫 보급 성공 · 모의평가', fs * 100, 1, '%', dd(fs, fsB), bars(fs, fsB, pf)],
+    ['circle-dollar-sign','violet','평균 물류비 · 모의평가', M.cash_cost_mean, 0, '$', `<span style="color:var(--${dc < 0 ? 'ok' : 'bad'})">현행 대비 ${dc < 0 ? '−' : '+'}${Math.abs(dc * 100).toFixed(1)}%</span>`, bars(M.cash_cost_mean, B1M.cash_cost_mean, usd, true)],
+    ['bell','warn','먼저 확인할 것', todoN, 0, '건', '<span style="color:var(--muted)">아래 목록에서 바로 처리</span>', `<div class="cmpb chips">${['bad','warn'].map(k => `<span class="pill ${k}">${RKN[k]} ${PARTS.filter(p => rk(p) === k).length}건</span>`).join('')}<span class="pill violet">서류 확인</span></div>`]
+  ].map(([i, c, l, v, dgt, unit, sub, extra]) => `<div class="card k"><span class="l"><span style="color:var(--${c});display:inline-flex">${ic(i)}</span>${l}</span><b class="tn" data-cv="${v}" data-dg="${dgt}" data-u="${unit}">${fmtK(v, dgt, unit)}</b><span class="s">${sub}</span>${extra}</div>`).join('');
+  countUp();
 }
 function buildTodo(){
   const T = [];
@@ -922,6 +999,83 @@ matchMedia('(prefers-color-scheme: light)').addEventListener('change', syncTheme
 
 
 /* ---------- boot ---------- */
+
+
+/* ---------- keyboard (Linear-style) ---------- */
+document.addEventListener('keydown', e => {
+  const t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+  if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) { e.preventDefault(); const q = document.getElementById('q'); q.focus(); q.select(); return; }
+  if (typing) { if (e.key === 'Escape') t.blur(); return; }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const views = Object.keys(VN);
+  if (/^[1-4]$/.test(e.key) && views[+e.key - 1]) { go(views[+e.key - 1]); return; }
+  if (view !== 'decide') return;
+  const rows = [...document.querySelectorAll('#dtbl tr[data-id]')].map(r => r.dataset.id); if (!rows.length) return;
+  const i = rows.indexOf(sel);
+  if (e.key === 'ArrowDown' || e.key === 'j') { e.preventDefault(); select(rows[Math.min(rows.length - 1, i + 1)] || rows[0]); }
+  else if (e.key === 'ArrowUp' || e.key === 'k') { e.preventDefault(); select(rows[Math.max(0, i - 1)] || rows[0]); }
+  else if (e.key === 'a' || e.key === 'A') { approved[sel] = !approved[sel]; saveApp(); renderTable(); renderSide(); renderDetail(); }
+});
+/* ---------- hero map ---------- */
+function drawHero(){
+  const el = document.getElementById('hero'), sv = d3.select('#hmap'); if (!el) return;
+  const W = el.clientWidth, H = el.clientHeight; if (!W) return;
+  sv.attr('viewBox', `0 0 ${W} ${H}`).selectAll('*').remove();
+  const narrow = W < 760, hp = d3.geoMercator();
+  hp.fitExtent(narrow ? [[24, 120], [W - 24, H - 150]] : [[W * .36, 118], [W - 60, H - 138]], { type:'MultiPoint', coordinates:[...ROUTE, BUSAN] });
+  const hpath = d3.geoPath(hp), df = sv.append('defs');
+  df.html(`<filter id="hg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="hg2" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>`);
+  const g = sv.append('g').attr('opacity', narrow ? .6 : 1);
+  g.append('path').datum(d3.geoGraticule().step([10, 10])()).attr('d', hpath).attr('fill', 'none').attr('stroke', 'rgba(120,170,235,.07)').attr('stroke-width', .7);
+  g.append('path').datum(land).attr('d', hpath).attr('fill', '#0e1c31');
+  g.append('path').datum(land).attr('d', hpath).attr('fill', 'none').attr('stroke', 'rgba(120,175,240,.38)').attr('stroke-width', .7);
+  g.append('path').datum(borders).attr('d', hpath).attr('fill', 'none').attr('stroke', 'rgba(120,175,240,.12)').attr('stroke-width', .5);
+  const L = CITIES.filter(c => c[2] >= 300).map(c => { const p = hp([c[0], c[1]]); return { x:p[0], y:p[1], r:.5 + Math.log10(c[2] / 300) * .8, big:c[2] >= 2000 }; });
+  g.append('g').attr('filter', 'url(#hg)').attr('opacity', .55).selectAll('circle').data(L.filter(d => d.big)).join('circle').attr('cx', d => d.x).attr('cy', d => d.y).attr('r', d => d.r * 2.4).attr('fill', '#ffcf7a');
+  g.append('g').attr('opacity', .7).selectAll('circle').data(L).join('circle').attr('cx', d => d.x).attr('cy', d => d.y).attr('r', d => d.r).attr('fill', '#ffd690');
+  // route
+  const rl = d3.line().curve(d3.curveCatmullRom.alpha(.5)), rd = rl(ROUTE.map(c => hp(c)));
+  g.append('path').attr('d', rd).attr('fill', 'none').attr('stroke', '#3b86ff').attr('stroke-width', 9).attr('opacity', .22).attr('filter', 'url(#hg2)');
+  const r1 = g.append('path').attr('d', rd).attr('fill', 'none').attr('stroke', '#5b9bff').attr('stroke-width', 2.2).attr('stroke-linecap', 'round');
+  const len = r1.node().getTotalLength(); r1.attr('stroke-dasharray', len).style('--len', len).attr('class', 'draw');
+  g.append('path').attr('d', rd).attr('fill', 'none').attr('stroke', '#cfe2ff').attr('stroke-width', 1.2).attr('stroke-dasharray', '2 10').attr('class', 'dash').attr('opacity', .8);
+  // flights from Busan
+  const b = hp(BUSAN), fl = g.append('g');
+  PARTS.forEach((p, idx) => { const t = hp(portOf(p.rec.port_id).ll), same = PARTS.filter(q => q.rec.port_id === p.rec.port_id), k = same.indexOf(p);
+    const dx = t[0] - b[0], dy = t[1] - b[1], bend = .14 + k * .03, col = getComputedStyle(el).getPropertyValue('--' + rk(p)).trim();
+    const d = `M${b[0]},${b[1]} Q${(b[0] + t[0]) / 2 + dy * bend},${(b[1] + t[1]) / 2 - dx * bend} ${t[0]},${t[1]}`;
+    fl.append('path').attr('d', d).attr('fill', 'none').attr('stroke', col).attr('stroke-width', 1.1).attr('opacity', .45).attr('stroke-dasharray', '3 5').attr('class', 'dash');
+    const id = 'hf' + idx; fl.append('path').attr('id', id).attr('d', d).attr('fill', 'none').attr('stroke', 'none');
+    const dot = fl.append('circle').attr('r', 2.6).attr('fill', col).attr('filter', null);
+    dot.append('animateMotion').attr('dur', (3.2 + (idx % 5) * .55) + 's').attr('begin', (idx * .37) + 's').attr('repeatCount', 'indefinite').html(`<mpath href="#${id}"/>`);
+    fl.append('circle').attr('r', 6).attr('fill', col).attr('opacity', .25).attr('filter', 'url(#hg)').append('animateMotion').attr('dur', (3.2 + (idx % 5) * .55) + 's').attr('begin', (idx * .37) + 's').attr('repeatCount', 'indefinite').html(`<mpath href="#${id}"/>`);
+  });
+  // ports
+  const worst = id => { const ps = PARTS.filter(p => p.rec.port_id === id); return ps.length ? Math.max(...ps.map(p => p.late)) : 0; };
+  PORTS.forEach(pt => { const [x, y] = hp(pt.ll), n = PARTS.filter(p => p.rec.port_id === pt.id).length, k = n ? rk({ late:worst(pt.id) }) : 'blue';
+    const col = getComputedStyle(el).getPropertyValue('--' + k).trim(), gp = g.append('g').attr('transform', `translate(${x},${y})`);
+    if (n) gp.append('circle').attr('r', 7).attr('fill', 'none').attr('stroke', col).attr('stroke-width', 1.5).attr('class', 'ring');
+    gp.append('circle').attr('r', 5.5).attr('fill', '#06101f').attr('stroke', col).attr('stroke-width', 2).attr('stroke-dasharray', pt.callP < 1 ? '2.5 2' : null);
+    gp.append('circle').attr('r', 2.2).attr('fill', col);
+    const left = pt.id === 'P4' || pt.id === 'P1';
+    if (narrow) return;
+    gp.append('text').attr('class', 'hlab').attr('x', left ? -11 : 11).attr('y', -2).attr('text-anchor', left ? 'end' : 'start').text(pt.short);
+    gp.append('text').attr('class', 'hsub').attr('x', left ? -11 : 11).attr('y', 11).attr('text-anchor', left ? 'end' : 'start').text(`D+${pt.eta} · 보급 ${n}건${pt.callP < 1 ? ` · 기항 ${pct(pt.callP)}` : ''}`); });
+  const gb = g.append('g').attr('transform', `translate(${b[0]},${b[1]})`);
+  gb.append('rect').attr('x', -5).attr('y', -5).attr('width', 10).attr('height', 10).attr('rx', 2).attr('fill', '#eaf1fb');
+  if (!narrow) gb.append('text').attr('class', 'hlab').attr('x', 10).attr('y', -4).text('부산 공급사');
+  const s0 = hp(START), s1 = hp(GEO.P1), ang = Math.atan2(s1[1] - s0[1], s1[0] - s0[0]) * 180 / Math.PI + 90, gs = g.append('g').attr('transform', `translate(${s0[0]},${s0[1]})`);
+  gs.append('circle').attr('r', 8).attr('fill', 'none').attr('stroke', '#7fb2ff').attr('stroke-width', 1.4).attr('class', 'ring');
+  gs.append('path').attr('d', 'M0,-8 L5.5,7 L0,4.5 L-5.5,7 Z').attr('fill', '#3b86ff').attr('stroke', '#fff').attr('stroke-width', 1).attr('transform', `rotate(${ang})`);
+  // copy
+  const nP = new Set(PARTS.map(p => p.rec.port_id)).size, cnt = { ok:0, warn:0, bad:0 }; PARTS.forEach(p => cnt[rk(p)]++);
+  document.getElementById('h-n').textContent = PARTS.length;
+  document.getElementById('h-sub').innerHTML = `<span>보급 항구 ${nP}곳 · 부산 공급사 항공 ${PARTS.length}편</span>` +
+    [['ok','안정'], ['warn','주의'], ['bad','위험']].map(([k, n]) => `<span><i style="background:var(--${k})"></i>${n} ${cnt[k]}건</span>`).join('');
+}
+window.__heroReady = true;
+new ResizeObserver(() => drawHero()).observe(document.getElementById('hero'));
 paintIcons(document); syncTheme(); renderAll();
 const start = (location.hash || '').slice(1);
 go(['decide','docs','route','verify'].includes(start) ? start : 'decide');

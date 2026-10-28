@@ -592,11 +592,11 @@ function renderK(){
   const on = 1 - M.late_parts_mean / n, onB = 1 - B1M.late_parts_mean / n, fs = 1 - M.fail_mean / n, fsB = 1 - B1M.fail_mean / n;
   const dc = (M.cash_cost_mean - B1M.cash_cost_mean) / B1M.cash_cost_mean;
   const todoN = buildTodo().length;
-  const dd = (a, b) => { const d = (a - b) * 100; return Math.abs(d) < .5 ? '<span style="color:var(--muted)">현행과 동등</span>' : `<span style="color:var(--${d > 0 ? 'ok' : 'bad'})">현행 대비 ${d > 0 ? '+' : '−'}${Math.abs(d).toFixed(1)}%p</span>`; };
+  const dd = (a, b) => { const d = (a - b) * 100; return Math.abs(d) < .5 ? '<span style="color:var(--muted)">현행과 비슷</span>' : `<span style="color:var(--${d > 0 ? 'ok' : 'bad'})">현행 대비 ${d > 0 ? '+' : '−'}${Math.abs(d).toFixed(1)}%p</span>`; };
   document.getElementById('k4').innerHTML = [
-    ['package-check','ok','기한 내 보급 (예상)', `${(on * 100).toFixed(1)}<small>%</small>`, dd(on, onB)],
-    ['plane','blue-3','첫 보급 성공 (예상)', `${(fs * 100).toFixed(1)}<small>%</small>`, dd(fs, fsB)],
-    ['circle-dollar-sign','violet','예상 물류비', usd(M.cash_cost_mean), `<span style="color:var(--${dc < 0 ? 'ok' : 'bad'})">현행 대비 ${dc < 0 ? '−' : '+'}${Math.abs(dc * 100).toFixed(1)}%</span>`],
+    ['package-check','ok','기한 내 보급 · 모의평가', `${(on * 100).toFixed(1)}<small>%</small>`, dd(on, onB)],
+    ['plane','blue-3','첫 보급 성공 · 모의평가', `${(fs * 100).toFixed(1)}<small>%</small>`, dd(fs, fsB)],
+    ['circle-dollar-sign','violet','평균 물류비 · 모의평가', usd(M.cash_cost_mean), `<span style="color:var(--${dc < 0 ? 'ok' : 'bad'})">현행 대비 ${dc < 0 ? '−' : '+'}${Math.abs(dc * 100).toFixed(1)}%</span>`],
     ['bell','warn','먼저 확인할 것', `${todoN}<small>건</small>`, '<span style="color:var(--muted)">아래 목록에서 바로 처리</span>']
   ].map(([i, c, l, v, s]) => `<div class="card k"><span class="l"><span style="color:var(--${c});display:inline-flex">${ic(i)}</span>${l}</span><b class="tn">${v}</b><span class="s">${s}</span></div>`).join('');
 }
@@ -631,7 +631,7 @@ function renderTable(){
     && (!q || p.name.includes(query) || p.id.toLowerCase().includes(q) || portOf(p.rec.port_id).name.includes(query)));
   const nA = PARTS.filter(p => approved[p.id]).length;
   document.getElementById('pcnt').textContent = `${nA}/${PARTS.length} 승인`;
-  document.getElementById('dtbl').innerHTML = `<thead><tr><th style="width:40px"></th><th>부품</th><th>받을 곳</th><th>운송</th><th>기한 내 도착</th><th class="r">예상 비용</th></tr></thead><tbody>` +
+  document.getElementById('dtbl').innerHTML = `<thead><tr><th style="width:40px"></th><th>부품</th><th>받을 곳</th><th>운송</th><th>기한 내 도착 · 모의평가</th><th class="r">계획상 비용</th></tr></thead><tbody>` +
     (list.map(p => { const k = rk(p), pt = portOf(p.rec.port_id);
       return `<tr data-id="${p.id}" class="${p.id === sel ? 'on' : ''}"><td><button type="button" class="chk" data-ap="${p.id}" aria-pressed="${!!approved[p.id]}" aria-label="${p.name} 승인">${ic('circle-check')}</button></td>
       <td class="w"><b>${p.name}</b><span>${p.id} · ${URG[p.urg]} · ${p.kg}kg · 기한 ${portOf(p.due).short}${p.ds.length ? ' · <span style="color:var(--violet)">서류</span>' : ''}</span></td>
@@ -667,17 +667,17 @@ function renderDetail(){
   document.getElementById('det').innerHTML = `<div class="ch" style="flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:4px"><span style="font-size:12px;color:var(--faint)">${p.id} · 긴급도 ${URG[p.urg]} · ${p.kg}kg · 필요 기한 ${portOf(p.due).name}</span><h3 style="font-size:18px">${p.name}</h3></div>
     <div class="cb pane">
       <div class="big"><span>추천</span><b>${port.name}에서 받기</b><span class="tn">${MODE[r.mode_id]} · D+${r.dispatch_day_p50.toFixed(1)} 발송 → D+${r.ready_day_p50.toFixed(1)} 준비 · 체류 D+${port.eta}~${port.dep}</span></div>
-      <div class="two2"><div class="mini2"><span>기한 내 도착</span><b class="tn" style="color:var(--${k})">${pct(onTime(p),1)}</b><span class="pill ${k}" style="align-self:flex-start">${RKN[k]}</span></div>
-        <div class="mini2"><span>예상 비용</span><b class="tn">${usd(r.cost_usd)}</b><span>현행 방식 ${b1 ? portOf(b1.port_id).short + ' 긴급' : '-'}</span></div></div>
+      <div class="two2"><div class="mini2"><span>기한 내 도착 · 모의평가</span><b class="tn" style="color:var(--${k})">${pct(onTime(p),1)}</b><span class="pill ${k}" style="align-self:flex-start">${RKN[k]}</span></div>
+        <div class="mini2"><span>계획상 비용</span><b class="tn">${usd(r.cost_usd)}</b><span>현행 방식 ${b1 ? portOf(b1.port_id).short + ' 긴급' : '-'}</span></div></div>
       <div><span class="lbl">이렇게 추천한 이유</span><ul class="why3" style="margin-top:8px">${whyList(p).map(s => `<li>${ic('circle-check')}<span>${s}</span></li>`).join('')}</ul></div>
       <div><span class="lbl">다른 선택지</span><table class="cmp" style="margin-top:6px"><thead><tr><th>받을 곳 · 운송</th><th class="r">기한 내 도착</th><th class="r">비용</th></tr></thead><tbody>
         ${alts.map(o => `<tr class="${mine(o) ? 'me' : ''}"><td>${mine(o) ? '★ ' : ''}${portOf(o.port).short} · ${MODE_S[o.mode]}</td><td class="r"><span class="pill ${o.late < .05 ? 'ok' : o.late < .25 ? 'warn' : 'bad'}">${pct(1 - o.late,0)}</span></td><td class="r tn">${usd(o.cost)}</td></tr>`).join('')}</tbody></table></div>
       <div><span class="lbl">서류</span><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">${p.ds.length ? p.ds.map(x => `<span class="pill ${x.v === 'unavailable' ? 'bad' : 'warn'}">${x.k} ${DOCV[x.v]}</span>`).join('') + `<button class="more" type="button" data-go="docs" style="margin:0;background:transparent;border:0">원문 근거 보기${ic('arrow-right')}</button>` : '<span class="pill ok">필요 서류 완료</span>'}</div></div>
-      <button class="btn${approved[p.id] ? ' ghost' : ''}" type="button" id="apOne" style="justify-content:center">${ic('circle-check')}${approved[p.id] ? '승인 취소' : '이 보급안 승인'}</button>
+      ${k === 'bad' && !approved[p.id] ? `<div class="note" style="font-size:12.5px;color:var(--bad);background:var(--bad-2);border-radius:8px;padding:8px 10px">가능한 후보 중 권고안이지만 기한 내 보급 위험이 높습니다. 위 다른 선택지와 원인을 확인한 뒤 승인하세요.</div>` : ''}<button class="btn${approved[p.id] ? ' ghost' : ''}" type="button" id="apOne" style="justify-content:center">${ic('circle-check')}${approved[p.id] ? '승인 취소' : (k === 'bad' ? '위험 확인 후 승인' : '이 보급안 승인')}</button>
       <details class="more2"><summary>자세히 · 첫 보급 성공률, 비용 구성</summary><div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;font-size:12.5px;color:var(--muted)">
-        <span>첫 시도 성공 ${pct(1 - p.fail,1)} · 모델 예상 실패 ${pct(r.p_miss,1)}</span>
+        <span>모의평가 첫 시도 성공 ${pct(1 - p.fail,1)} · 계획 당시 추정 첫 실패 ${pct(r.p_miss,1)}</span>
         ${r.cb ? Object.entries({ transport_usd:'운임', port_service_share_usd:'대리점·통선비 배분', dispatch_fixed_share_usd:'발송 고정비 배분', expected_failure_proxy_usd:'실패 대리비용', expected_penalty_usd:'기한 실패 기대벌점' }).filter(([kk]) => r.cb[kk]).map(([kk, n]) => `<span style="display:flex;justify-content:space-between"><span>${n}</span><b class="tn" style="color:var(--fg)">${usd(r.cb[kk])}</b></span>`).join('') : ''}
-        <span class="foot2">예상 비용은 계획상 배분액이며 실제 청구액이 아닙니다.</span></div></details>
+        <span class="foot2">계획상 비용은 실패 대리비용까지 포함해 부품별로 나눈 계획용 금액이며, 실제 청구액이나 상단 물류비(모의평가 평균)와 합계가 맞지 않습니다.</span></div></details>
     </div>`;
   document.getElementById('apOne').onclick = () => { approved[p.id] = !approved[p.id]; saveApp(); renderTable(); renderSide(); renderDetail(); };
 }
@@ -864,7 +864,7 @@ new ResizeObserver(() => { if (view === 'route') drawMap(); }).observe(document.
     ['gauge','2. 기한 내 도착 확률 계산',`과거 보급 이력 ${DATA.meta.baseN}건으로 견적 리드타임 편향을 보정하고, 출고·항공·통관·기항 취소를 ${DATA.meta.n_plan.toLocaleString()}회 모의해 부품·항구·운송수단별 실패 확률을 냅니다.`, `첫 보급 실패: 견적 그대로 ${c.P_uncalibrated.evaluation_initial_misses.toFixed(2)}건 → 보정 ${M.fail_mean.toFixed(2)}건`, 'ok'],
     ['route','3. 보급항·운송수단 결정','운송비, 항구별 대리점·통선비, 실패 기대비용을 함께 최소화합니다(혼합정수계획). 재보급 기회가 없는 부품은 통합편 대기를 허용하지 않습니다.','PuLP · CBC로 풀이', 'ok']
   ].map(([i, h, p, s, k]) => `<div class="card step"><span class="n">${ic(i)}</span><h4>${h}</h4><p>${p}</p><span class="pill ${k}" style="align-self:flex-start;margin-top:auto">${s}</span></div>`).join('');
-  const dl = (a, b) => { const r = (a - b) / b; return Math.abs(r) < .01 ? '<span class="pill blue">동등</span>' : `<span class="pill ${r < 0 ? 'ok' : 'bad'}">${r < 0 ? '▼' : '▲'} ${Math.abs(r * 100).toFixed(1)}%</span>`; };
+  const dl = (a, b) => { const r = (a - b) / b; return Math.abs(r) < .01 ? '<span class="pill blue">비슷</span>' : `<span class="pill ${r < 0 ? 'ok' : 'bad'}">${r < 0 ? '▼' : '▲'} ${Math.abs(r * 100).toFixed(1)}%</span>`; };
   document.getElementById('kp4').innerHTML = [
     ['plane','violet','물류비', usd(M.cash_cost_mean), dl(M.cash_cost_mean, B.cash_cost_mean), `최근접 급송 ${usd(B.cash_cost_mean)}`],
     ['package-check','ok','첫 보급 실패', M.fail_mean.toFixed(2) + '건', dl(M.fail_mean, B.fail_mean), `최근접 급송 ${B.fail_mean.toFixed(2)}건`],
@@ -877,7 +877,7 @@ new ResizeObserver(() => { if (view === 'route') drawMap(); }).observe(document.
   const mx = Math.max(...rows.map(r => r[1]));
   document.getElementById('floor').innerHTML = `<p class="note" style="font-size:12.5px;color:var(--muted)">늦은 출고와 서류 발급 불가처럼 어떤 선택으로도 피할 수 없는 위반이 있어, 이 시나리오의 기한 위반은 ${floor.toFixed(3)}건 아래로 내려갈 수 없습니다. 최근접 급송은 모든 부품을 긴급 항공으로 보내 하한에 도달하고, 제안 방식은 같은 수준을 훨씬 적은 물류비로 달성합니다.</p>
     ${rows.map(([n, v], i) => `<div style="display:grid;grid-template-columns:minmax(0,1fr) 120px 56px;gap:10px;align-items:center;font-size:13px;padding:6px 0"><span style="${i === 2 ? 'font-weight:600;color:var(--blue-3)' : ''}">${n}</span><span class="bar" style="display:block;height:8px;border-radius:4px;background:var(--line);overflow:hidden"><u style="display:block;height:100%;width:${v / mx * 100}%;background:${i === 0 ? 'var(--faint)' : i === 3 ? 'var(--warn)' : 'var(--blue)'}"></u></span><b class="tn" style="text-align:right">${v.toFixed(3)}</b></div>`).join('')}
-    <p class="note" style="font-size:12.5px;color:var(--muted)">기한 우선 − 최근접 급송 = ${PR.late[0] >= 0 ? '+' : ''}${PR.late[0].toFixed(3)}건 (95% 구간 ${PR.late[1].toFixed(3)} ~ ${PR.late[2].toFixed(3)}). 처음 쓰는 평가 세계에서는 ${(R.m2.P_rule.late_parts_mean - R.m2.B1_nearest.late_parts_mean).toFixed(3)}건으로 차이가 없었습니다. 처음 버전(비용 우선)의 기한 위반 증가는 대부분 유압 호스(SP07)의 통합편 대기에서 나왔고, "재보급 기회가 없는 부품은 통합편 대기 금지" 규칙으로 해소했습니다.</p>`;
+    <p class="note" style="font-size:12.5px;color:var(--muted)">기한 우선 − 최근접 급송 = ${PR.late[0] >= 0 ? '+' : ''}${PR.late[0].toFixed(3)}건 (95% 구간 ${PR.late[1].toFixed(3)} ~ ${PR.late[2].toFixed(3)}). 처음 쓰는 평가 세계에서는 ${(R.m2.P_rule.late_parts_mean - R.m2.B1_nearest.late_parts_mean).toFixed(3)}건으로 차이가 없었습니다. 처음 버전(비용 우선)의 기한 위반 증가는 대부분 유압 호스(SP07)의 통합편 대기에서 나왔습니다. 그래서 "재보급 기회가 없는 부품(필요 기한 항구에서 받는 부품)은 통합편을 기다리지 않는다"는 규칙을 별도 정책(기한 우선)으로 추가했고, 규칙을 고정한 뒤 처음 쓰는 평가 세계에서 다시 확인했습니다. 기존 비용 우선 방식은 그대로 남겨 비교할 수 있습니다.</p>`;
   // policy table
   const met = pol => DATA.metrics.find(m => m.policy === pol);
   const POL2 = [['P_rule','제안 · 기한 우선 (기본)', M], ['P_cost','제안 · 비용 우선', Pc], ['B1','최근접 기항지 급송 (현행 근사)', met('B1_nearest')], ['B2','허브(싱가포르) 대기', met('B2_hub')], ['B3','논문 가중치 점수표', met('B3_scorecard')], ['PU','제안 · 견적 그대로 (보정 없음)', met('P_uncalibrated')], ['B5','문서 조건 미반영', met('B5_no_ai')], ['B4','평균값 최소비용', met('B4_deterministic')]];
